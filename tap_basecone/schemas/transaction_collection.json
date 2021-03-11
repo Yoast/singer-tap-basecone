@@ -1,0 +1,150 @@
+{
+	"selected": true,
+	"type": [
+	  "null",
+	  "object"
+	],
+	"additionalProperties": false,
+	"properties": {
+		"type": {
+			"type": "string"
+		},
+		"description": {
+			"type": [
+				"null",
+				"string"
+			]
+		},
+		"dueDate": {
+			"type":	"string",
+			"format": "date-time"
+		},
+		"invoiceNumber": {
+			"type":	"string"
+		},
+		"customer": {
+			"type":	"object",
+			"additionalProperties": false,
+			"properties": {
+				"customerId": {
+					"type": "string"
+				},
+				"code": {
+					"type": "number",
+					"format": "integer"
+				},
+				"name": {
+					"type": "string"
+				}
+			}
+		},
+		"paymentCondition": {
+			"type":	"object",
+			"additionalProperties": false,
+			"properties": {
+				"paymentConditionId": {
+					"type": "string"
+				},
+				"code": {
+					"type": "number",
+					"format": "integer"
+				}
+			}
+		},
+		"isInPaymentBatch": {
+			"type":	"string"
+		},
+		"isCreditNote": {
+			"type":	"string"
+		},
+		"totalAmount": {
+			"type":	"number"
+		},
+		"transactionID": {
+			"type":	"string"
+		},
+		"documentID": {
+			"type":	"string"
+		},
+		"targetCompany": {
+			"type":	"object",
+			"additionalProperties": false,
+			"properties": {
+				"code": {
+					"type": "number",
+					"format": "integer"
+				}
+			}
+		},
+		"destinationCompany": {
+			"type":	"object",
+			"additionalProperties": false,
+			"properties": {
+				"code": {
+					"type": "number",
+					"format": "integer"
+				}
+			}
+		},
+		"transactionNumber": {
+			"type":	"number",
+			"format": "integer"
+		},
+		"transactionDate": {
+			"type":	"string",
+			"format": "date-time"
+		},
+		"generalLedger": {
+			"type":	"object",
+			"additionalProperties": false,
+			"properties": {
+				"generalLedgerId": {
+					"type": "string"
+				},
+				"code": {
+					"type": "number",
+					"format": "integer"
+				}
+			}
+		},
+		"period": {
+			"type":"string"
+		},
+		"currency": {
+			"type":	"object",
+			"additionalProperties": false,
+			"properties": {
+				"currencyId": {
+					"type": "string"
+				},
+				"code": {
+					"type": "string"
+				}
+			}
+		},
+		"additionalField1": {
+			"type": [
+				"null",
+				"string"
+			]
+		},
+		"additionalField2": {
+			"type": [
+				"null",
+				"string"
+			]
+		},
+		"additionalField3": {
+			"type": [
+				"null",
+				"string"
+			]
+		},
+		"isFinalBooking": {
+			"type":"string"
+		},
+		"bookYear": {
+			"type":"string"
+		}
+	}
+}

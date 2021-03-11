@@ -4,7 +4,7 @@ from types import MappingProxyType
 
 # Streams metadata
 STREAMS: MappingProxyType = MappingProxyType({
-    'transactions': {
+    'transaction_collection': {
         'key_properties': 'transactionId',
         'replication_method': 'INCREMENTAL',
         'replication_key': 'transactionId',
