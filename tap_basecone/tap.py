@@ -18,7 +18,7 @@ REQUIRED_CONFIG_KEYS: tuple = (
     'password',
     'company_id',
     'client_identifier',
-    'client_apikey',
+    'client_secret',
     'start_date',
 )
 
@@ -51,7 +51,7 @@ def main() -> None:
         args.config['password'],
         args.config['company_id'],
         args.config['client_identifier'],
-        args.config['client_apikey'],
+        args.config['client_secret'],
         args.config['start_date'],
     )
 

@@ -3,6 +3,6 @@
   "password": "my_password",
   "company_id": "my_companyid",
   "client_identifier": "my_client_identifier",
-  "client_apikey": "my_apikey",
-  "start_date": "2017-01-01T00:00:00Z"
+  "client_secret": "my_apikey",
+  "start_date": "2020-01-01T00:00:00Z"
 }
