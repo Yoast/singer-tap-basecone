@@ -14,12 +14,8 @@ from tap_basecone.sync import sync
 VERSION: str = pkg_resources.get_distribution('tap-basecone').version
 LOGGER: logging.RootLogger = get_logger()
 REQUIRED_CONFIG_KEYS: tuple = (
-    'username',
-    'password',
     'company_id',
-    'client_identifier',
-    'client_secret',
-    'start_date',
+    'auth_token',
 )
 
 
@@ -45,14 +41,10 @@ def main() -> None:
         # Loadt the  catalog
         catalog = discover()
 
-    # Initialize Basecone client
+    # Initialize basecone client
     basecone: Basecone = Basecone(
-        args.config['username'],
-        args.config['password'],
         args.config['company_id'],
-        args.config['client_identifier'],
-        args.config['client_secret'],
-        args.config['start_date'],
+        args.config['auth_token'],
     )
 
     sync(basecone, args.state, catalog, args.config['start_date'])

@@ -4,7 +4,8 @@
 import logging
 from datetime import datetime, timedelta
 from types import MappingProxyType
-from typing import Generator, Optional
+from typing import Callable, Generator, Optional
+from tap_basecone.cleaners import CLEANERS
 
 import httpx
 import singer
@@ -15,14 +16,8 @@ API_VERSION: str = '/v1'
 API_REPORT_PATH: str = 'transactions'
 API_COMPANY_ID: str = '?companyId=:id:'
 API_REPORT_DATE: str = '&transactionDate=:date:'
-API_PATH_AUTH: str = 'authentication/token'
-
 HEADERS: MappingProxyType = MappingProxyType({
-    'User-Agent': (
-        'Singer Tap: GitHub.com/Yoast/singer-tap-basecone/ | By Yoast.com'
-    ),
-    'Content-Type': 'application/json',
-    'Authorization': 'Bearer :accesstoken:',
+    'Authorization': 'Basic :accesstoken:',
 })
 
 
@@ -31,26 +26,17 @@ class Basecone(object):  # noqa: WPS230
 
     def __init__(  # noqa: WPS211
         self,
-        username: str,
-        password: str,
         company_id: str,
-        client_identifier: str,
-        client_secret: str,
+        auth_token: str,
     ) -> None:
         """Initialize Basecone client.
 
         Arguments:
-            username {str} -- Reporting user username
-            password {str} --Reporting user password
-            company_id {str} -- Adyen company account
-            client_identifier {str} -- API Client Id
-            client_secret {str} -- API Client Secret
+            company_id {str} -- Basecone company account
+            auth_token {str} -- Base64 encoded Token
         """
-        self.username: str = username
-        self.password: str = password
         self.company_id: str = company_id
-        self.client_identifier: str = client_identifier
-        self.client_secret: str = client_secret
+        self.auth_token: str = auth_token
         self.token: Optional[str] = None
 
         # Setup reusable web client
@@ -60,11 +46,11 @@ class Basecone(object):  # noqa: WPS230
         self.logger: logging.RootLogger = singer.get_logger()
 
         # Perform authentication during initialising
-        self._authenticate()
+        self.create_header()
 
-    def transactions(  # noqa: WPS210
+    def transaction_collection(  # noqa: WPS210
         self,
-        start_date: str,
+        **kwargs: dict,
     ) -> Generator[str, None, None]:
         """Basecone transactions.
 
@@ -76,14 +62,21 @@ class Basecone(object):  # noqa: WPS230
         """
         self.logger.info('Stream Basecone transactions')
 
-        parsed_date: datetime = datetime.strptime(start_date, '%Y-%m-%d')
+        cleaner: Callable = CLEANERS.get('transaction_collection', {})
+
+        # Validate the start_date value exists
+        start_date_input: str = str(kwargs.get('start_date', ''))
+
+        if not start_date_input:
+            raise ValueError('The parameter start_date is required.')
+
+        parsed_date: datetime = datetime.strptime(start_date_input, '%Y-%m-%d')
 
         # Replace placeholder in reports path
         company: str = API_COMPANY_ID.replace(
             ':id:',
             self.company_id,
         )
-
         client: httpx.Client = httpx.Client(http2=True)
 
         while True:
@@ -97,8 +90,12 @@ class Basecone(object):  # noqa: WPS230
             # Create the URL
             url: str = (
                 f'{API_SCHEME}{API_BASE_URL}'
-                f'{API_VERSION}{API_REPORT_PATH}'
+                f'{API_VERSION}/{API_REPORT_PATH}'
                 f'{company}{report_date}'
+            )
+
+            self.logger.info(
+                f'Recieving Basecone transactions from {date}'
             )
 
             response: httpx._models.Response = client.get(  # noqa: WPS437
@@ -111,67 +108,24 @@ class Basecone(object):  # noqa: WPS230
             if response.status_code == 200:
 
                 yield from (
-                    transaction
+                    cleaner(transaction)
                     for transaction in jsondata['transactions']
                 )
                 parsed_date = parsed_date + timedelta(days=1)
 
             elif response.status_code == 404:  # noqa: WPS432
-                self.logger.debug(
+                self.logger.info(
                     f'Transactions with date: {date} not '
                     'found, stopping.',
                 )
                 break
 
-    def _authenticate(self) -> None:  # noqa: WPS210
-        """Generate a bearer access token."""
-        url: str = (
-            f'{API_SCHEME}{API_BASE_URL}/'
-            f'{API_VERSION}/{API_PATH_AUTH}'
-        )
-        headers: dict = {
-            'Accept': 'application/json',
-            'Accept-Language': 'en_US',
-        }
-        post_data: dict = {
-            'Username': self.username,
-            'Password': self.password,
-            'OfficeCode': self.company_id,
-            'ClientId': self.client_identifier,
-            'ClientSecret': self.client_secret,
-        }
+    def create_header(self) -> None:
+        """Generate a basic access token header."""
 
-        client: httpx.Client = httpx.Client(http2=True)
-
-        response: httpx._models.Response = client.post(  # noqa: WPS437
-            url,
-            headers=headers,
-            data=post_data,
-        )
-
-        # Raise error on 4xx and 5xxx
-        response.raise_for_status()
-
-        response_data: dict = response.json()
-
-        # Save the token
-        self.token = response_data.get('token')
-
-        # Set up headers to use in API requests
-        self._create_headers()
-
-        appid: Optional[str] = response_data.get('app_id')
-
-        self.logger.info(
-            'Authentication succesfull '
-            f'(appid: {appid})',
-        )
-
-    def _create_headers(self) -> None:
-        """Create authenticationn headers for requests."""
         headers: dict = dict(HEADERS)
         headers['Authorization'] = headers['Authorization'].replace(
             ':accesstoken:',
-            self.token,
+            self.auth_token,
         )
         self.headers = headers

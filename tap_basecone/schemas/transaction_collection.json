@@ -15,136 +15,103 @@
 				"string"
 			]
 		},
-		"dueDate": {
+		"due_date": {
 			"type":	"string",
 			"format": "date-time"
 		},
-		"invoiceNumber": {
+		"invoice_number": {
 			"type":	"string"
 		},
-		"customer": {
-			"type":	"object",
-			"additionalProperties": false,
-			"properties": {
-				"customerId": {
-					"type": "string"
-				},
-				"code": {
-					"type": "number",
-					"format": "integer"
-				},
-				"name": {
-					"type": "string"
-				}
-			}
+		"supplier_id": {
+			"type": "string"
 		},
-		"paymentCondition": {
-			"type":	"object",
-			"additionalProperties": false,
-			"properties": {
-				"paymentConditionId": {
-					"type": "string"
-				},
-				"code": {
-					"type": "number",
-					"format": "integer"
-				}
-			}
+		"supplier_code": {
+			"type": "number",
+			"format": "integer"
 		},
-		"isInPaymentBatch": {
+		"supplier_name": {
+			"type": "string"
+		},
+		"payment_condition": {
+			"type": [
+				"null",
+				"string"
+			]
+		},
+		"is_in_payment_batch": {
 			"type":	"string"
 		},
-		"isCreditNote": {
+		"is_credit_note": {
 			"type":	"string"
 		},
-		"totalAmount": {
+		"total_amount": {
 			"type":	"number"
 		},
-		"transactionID": {
+		"transaction_id": {
+			"type":	[
+				"null",
+				"string"
+			]
+		},
+		"document_id": {
 			"type":	"string"
 		},
-		"documentID": {
-			"type":	"string"
+		"target_company": {
+			"type": "number",
+			"format": "integer"
 		},
-		"targetCompany": {
-			"type":	"object",
-			"additionalProperties": false,
-			"properties": {
-				"code": {
-					"type": "number",
-					"format": "integer"
-				}
-			}
+		"destination_company": {
+			"type": "number",
+			"format": "integer"
 		},
-		"destinationCompany": {
-			"type":	"object",
-			"additionalProperties": false,
-			"properties": {
-				"code": {
-					"type": "number",
-					"format": "integer"
-				}
-			}
-		},
-		"transactionNumber": {
+		"transaction_number": {
 			"type":	"number",
 			"format": "integer"
 		},
-		"transactionDate": {
+		"transaction_date": {
 			"type":	"string",
 			"format": "date-time"
 		},
-		"generalLedger": {
-			"type":	"object",
-			"additionalProperties": false,
-			"properties": {
-				"generalLedgerId": {
-					"type": "string"
-				},
-				"code": {
-					"type": "number",
-					"format": "integer"
-				}
-			}
+		"generalledger_id": {
+			"type": "string"
+		},
+		"generalledger_code": {
+			"type": "number",
+			"format": "integer"
 		},
 		"period": {
 			"type":"string"
 		},
-		"currency": {
-			"type":	"object",
-			"additionalProperties": false,
-			"properties": {
-				"currencyId": {
-					"type": "string"
-				},
-				"code": {
-					"type": "string"
-				}
-			}
+		"currency_id": {
+			"type": "string"
 		},
-		"additionalField1": {
+		"currency_code": {
+			"type": "string"
+		},
+		"additional_field1": {
 			"type": [
 				"null",
 				"string"
 			]
 		},
-		"additionalField2": {
+		"additional_field2": {
 			"type": [
 				"null",
 				"string"
 			]
 		},
-		"additionalField3": {
+		"additional_field3": {
 			"type": [
 				"null",
 				"string"
 			]
 		},
-		"isFinalBooking": {
+		"is_final_booking": {
 			"type":"string"
 		},
-		"bookYear": {
-			"type":"string"
+		"book_year": {
+			"type":"number",
+			"format": "integer"
 		}
 	}
 }

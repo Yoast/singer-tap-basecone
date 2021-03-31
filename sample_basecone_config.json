@@ -1,8 +1,5 @@
 {
-  "username": "my_username",
-  "password": "my_password",
-  "company_id": "my_companyid",
-  "client_identifier": "my_client_identifier",
-  "client_secret": "my_apikey",
+  "company_id": "my_company_id",
+  "auth_token": "my_auth_token",
   "start_date": "2020-01-01T00:00:00Z"
 }

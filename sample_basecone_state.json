@@ -1,7 +1,7 @@
 {
   "bookmarks": {
-    "transactions": {
-      "start_date": "2020-01"
+    "transaction_collection": {
+      "start_date": "2015-01-01"
     }
   }
 }
