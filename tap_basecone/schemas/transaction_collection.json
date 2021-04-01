@@ -1,0 +1,141 @@
+{
+	"selected": true,
+	"type": [
+	  "null",
+	  "object"
+	],
+	"additionalProperties": false,
+	"properties": {
+		"type": {
+			"type": "string"
+		},
+		"description": {
+			"type": [
+				"null",
+				"string"
+			]
+		},
+		"due_date": {
+			"type":	"string",
+			"format": "date-time"
+		},
+		"invoice_number": {
+			"type":	"string"
+		},
+		"supplier_id": {
+			"type": [
+				"null",
+				"string"
+			]
+		},
+		"supplier_code": {
+			"type":	[
+				"null",
+				"number"
+			],
+			"format": "integer"
+		},
+		"supplier_name": {
+			"type": [
+				"null",
+				"string"
+			]
+		},
+		"payment_condition": {
+			"type": [
+				"null",
+				"object"
+			],
+			"additionalProperties": false,
+			"properties": {
+				"paymentConditionId":{
+					"type": [
+						"null",
+						"string"
+					]
+				},
+				"code":{
+					"type": [
+						"null",
+						"string"
+					]
+				}
+			}
+		},
+		"is_in_payment_batch": {
+			"type":	"string"
+		},
+		"is_credit_note": {
+			"type":	"string"
+		},
+		"total_amount": {
+			"type":	"number"
+		},
+		"transaction_id": {
+			"type":	[
+				"null",
+				"string"
+			]
+		},
+		"document_id": {
+			"type":	"string"
+		},
+		"target_company": {
+			"type": "number",
+			"format": "integer"
+		},
+		"destination_company": {
+			"type": "number",
+			"format": "integer"
+		},
+		"transaction_number": {
+			"type":	"number",
+			"format": "integer"
+		},
+		"transaction_date": {
+			"type":	"string",
+			"format": "date-time"
+		},
+		"generalledger_id": {
+			"type": "string"
+		},
+		"generalledger_code": {
+			"type": "number",
+			"format": "integer"
+		},
+		"period": {
+			"type":"string"
+		},
+		"currency_id": {
+			"type": "string"
+		},
+		"currency_code": {
+			"type": "string"
+		},
+		"additional_field1": {
+			"type": [
+				"null",
+				"string"
+			]
+		},
+		"additional_field2": {
+			"type": [
+				"null",
+				"string"
+			]
+		},
+		"additional_field3": {
+			"type": [
+				"null",
+				"string"
+			]
+		},
+		"is_final_booking": {
+			"type":"string"
+		},
+		"book_year": {
+			"type":"number",
+			"format": "integer"
+		}
+	}
+}
