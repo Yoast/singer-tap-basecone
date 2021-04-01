@@ -272,13 +272,13 @@ STREAMS: MappingProxyType = MappingProxyType({
                 'map': 'invoice_number', 'null': False,
             },
             'supplier_id': {
-                'map': 'supplier_id', 'null': False,
+                'map': 'supplier_id', 'null': True,
             },
             'supplier_code': {
-                'map': 'supplier_code', 'type': int, 'null': False,
+                'map': 'supplier_code', 'type': int, 'null': True,
             },
             'supplier_name': {
-                'map': 'supplier_name', 'null': False,
+                'map': 'supplier_name', 'null': True,
             },
             'paymentCondition': {
                 'map': 'payment_condition', 'null': True,

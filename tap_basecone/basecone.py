@@ -2,11 +2,11 @@
 # -*- coding: utf-8 -*-
 
 import logging
-from datetime import datetime, timedelta
+from datetime import date, datetime, timedelta
 from types import MappingProxyType
 from typing import Callable, Generator, Optional
 from tap_basecone.cleaners import CLEANERS
-
+from dateutil.rrule import DAILY, rrule
 import httpx
 import singer
 
@@ -78,13 +78,12 @@ class Basecone(object):  # noqa: WPS230
             self.company_id,
         )
         client: httpx.Client = httpx.Client(http2=True)
-
-        while True:
-
-            date: str = parsed_date.strftime('%Y-%m-%d')
+        
+        for date_day in self._start_days_till_now(start_date_input):
+            
             report_date: str = API_REPORT_DATE.replace(
                 ':date:',
-                str(date),
+                str(date_day),
             )
 
             # Create the URL
@@ -95,7 +94,7 @@ class Basecone(object):  # noqa: WPS230
             )
 
             self.logger.info(
-                f'Recieving Basecone transactions from {date}'
+                f'Recieving Basecone transactions from {date_day}'
             )
 
             response: httpx._models.Response = client.get(  # noqa: WPS437
@@ -111,7 +110,6 @@ class Basecone(object):  # noqa: WPS230
                     cleaner(transaction)
                     for transaction in jsondata['transactions']
                 )
-                parsed_date = parsed_date + timedelta(days=1)
 
             elif response.status_code == 404:  # noqa: WPS432
                 self.logger.info(
@@ -129,3 +127,30 @@ class Basecone(object):  # noqa: WPS230
             self.auth_token,
         )
         self.headers = headers
+
+    def _start_days_till_now(self, start_date: str) -> Generator:
+        """Yield YYYY/MM/DD for every day until now.
+
+        Arguments:
+            start_date {str} -- Start date e.g. 2020-01-01
+
+        Yields:
+            Generator -- Every day until now.
+        """
+        # Parse input date
+        year: int = int(start_date.split('-')[0])
+        month: int = int(start_date.split('-')[1].lstrip())
+        day: int = int(start_date.split('-')[2].lstrip())
+
+        # Setup start period
+        period: date = date(year, month, day)
+
+        # Setup itterator
+        dates: rrule = rrule(
+            freq=DAILY,
+            dtstart=period,
+            until=datetime.utcnow(),
+        )
+
+        # Yield dates in YYYY-MM-DD format
+        yield from (date_day.strftime('%Y-%m-%d') for date_day in dates)

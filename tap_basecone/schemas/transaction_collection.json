@@ -23,20 +23,44 @@
 			"type":	"string"
 		},
 		"supplier_id": {
-			"type": "string"
-		},
-		"supplier_code": {
-			"type": "number",
-			"format": "integer"
-		},
-		"supplier_name": {
-			"type": "string"
-		},
-		"payment_condition": {
 			"type": [
 				"null",
 				"string"
 			]
+		},
+		"supplier_code": {
+			"type":	[
+				"null",
+				"number"
+			],
+			"format": "integer"
+		},
+		"supplier_name": {
+			"type": [
+				"null",
+				"string"
+			]
+		},
+		"payment_condition": {
+			"type": [
+				"null",
+				"object"
+			],
+			"additionalProperties": false,
+			"properties": {
+				"paymentConditionId":{
+					"type": [
+						"null",
+						"string"
+					]
+				},
+				"code":{
+					"type": [
+						"null",
+						"string"
+					]
+				}
+			}
 		},
 		"is_in_payment_batch": {
 			"type":	"string"
